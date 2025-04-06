@@ -1,0 +1,29 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("C:\\Users\\hp\\OneDrive\\Desktop\\climate_change_impact_on_agriculture_2024.csv")
+print("Display few rows of Data: ",df.head(10))
+print("Information about the data: ",df.info())
+#Filling the missing values.
+df.fillna(value=0, inplace=True)
+print("Statistical Description about the data: ",df.describe())
+df['Extreme_Weather_Events'] = df['Extreme_Weather_Events'].replace(0, "null")
+
+print("Value counts after replacement:")
+print(df['Extreme_Weather_Events'].value_counts(dropna=False))
+
+#Normalization:
+numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
+normalized = df.copy()
+for col in numerical_cols:
+    min_val = df[col].min()
+    max_val = df[col].max()
+    if max_val != min_val:
+        normalized[col] = (df[col] - min_val) / (max_val - min_val)
+    else:
+        normalized[col] = 0  
+
+df.to_csv("C:\\Users\\hp\\OneDrive\\Desktop\\climate_change_impact_on_agriculture_2024.csv", index=False)
+
