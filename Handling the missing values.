@@ -1,0 +1,19 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("C:\\Users\\hp\\OneDrive\\Desktop\\climate_change_impact_on_agriculture_2024.csv")
+print("Display few rows of Data: ",df.head(10))
+print("Information about the data: ",df.info())
+#Filling the missing values.
+df.fillna(value=0, inplace=True)
+print("Statistical Description about the data: ",df.describe())
+df['Extreme_Weather_Events'] = df['Extreme_Weather_Events'].replace(0, "null")
+
+print("Value counts after replacement:")
+print(df['Extreme_Weather_Events'].value_counts(dropna=False))
+
+
+df.to_csv("C:\\Users\\hp\\OneDrive\\Desktop\\climate_change_impact_on_agriculture_2024.csv", index=False)
+
