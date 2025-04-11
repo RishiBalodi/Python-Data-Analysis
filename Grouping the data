@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv("C:\\Users\\hp\\OneDrive\\Desktop\\climate_change_impact_on_agriculture_2024.csv")
+#Displaying few data
+print("Display few rows of Data: ",df.head(10))
+print("Information about the data: ",df.info())
+
+#Filling the missing values.
+df.fillna(value=0, inplace=True)
+print("Statistical Description about the data: ",df.describe())
+df['Extreme_Weather_Events'] = df['Extreme_Weather_Events'].replace(0, "null")
+
+print("Value counts after replacement:")
+print(df['Extreme_Weather_Events'].value_counts(dropna=False))
+
+#Normalization:
+numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
+normalized = df.copy()
+for col in numerical_cols:
+    min_val = df[col].min()
+    max_val = df[col].max()
+    if max_val != min_val:
+        normalized[col] = (df[col] - min_val) / (max_val - min_val)
+    else:
+        normalized[col] = 0
+
+#Grouping The Data
+grouped = df.groupby('Country').mean(numeric_only=True)
+print("\nMean by country (numeric columns):\n", grouped)
+numeric_cols = ['Average_Temperature_C', 'Total_Precipitation_mm', 
+                   'CO2_Emissions_MT', 'Crop_Yield_MT_per_HA']
+if all(col in df.columns for col in numeric_cols):
+    grouped_specific = df.groupby('Country')[numeric_cols].mean()
+    print("\nMean for specific columns by country:\n", grouped_specific)
+else:
+    missing = [col for col in numeric_cols if col not in df.columns]
+    print(f"\nColumns not found: {missing}")
