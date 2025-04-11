@@ -1,0 +1,36 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+#Plotting the Graphs
+    
+#Crop Yield Over Time
+sns.lineplot(data=df, x='Year', y='Crop_Yield_MT_per_HA', hue='Crop_Type')
+plt.title("Crop Yield Trend Over Years")
+plt.show()
+
+#Average Yield by Country
+sns.barplot(data=df, x='Country', y='Crop_Yield_MT_per_HA')
+plt.xticks(rotation=45)
+plt.title("Average Crop Yield by Country")
+plt.show()
+
+#Temperature vs. Crop Yield
+sns.scatterplot(data=df, x='Average_Temperature_C', y='Crop_Yield_MT_per_HA', hue='Crop_Type')
+plt.title("Temperature Impact on Crop Yield")
+plt.show()
+
+#Heatmap
+corr = df[['Average_Temperature_C', 'Total_Precipitation_mm', 'CO2_Emissions_MT', 'Crop_Yield_MT_per_HA']].corr()
+sns.heatmap(corr, annot=True, cmap='coolwarm')
+plt.title("Correlation Between Climate & Crop Yield")
+plt.show()
+
+#Box Plot
+sns.boxplot(data=df, x='Region', y='Pesticide_Use_KG_per_HA')
+plt.title("Pesticide Usage Across Regions")
+plt.show()
+
+df.to_csv("C:\\Users\\hp\\OneDrive\\Desktop\\climate_change_impact_on_agriculture_2024.csv", index=False)
+
